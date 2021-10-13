@@ -1,13 +1,13 @@
-const blogRouter = require('express').Router();
+const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 
-blogRouter.get("/", (request, response, next) => {
+blogsRouter.get("/", (request, response, next) => {
     Blog.find({})
     .then(result => response.json(result))
     .catch(error => next(error))
 });
 
-blogRouter.post("/", (request, response, next) => {
+blogsRouter.post("/", (request, response, next) => {
     const body = request.body;
 
     if(body.author=='' || body.title=='' || body.description==''){
@@ -25,7 +25,7 @@ blogRouter.post("/", (request, response, next) => {
     .catch(error => next(error))
 });
 
-blogRouter.put("/:id",(request, response, next) => {
+blogsRouter.put("/:id",(request, response, next) => {
     const body = request.body;
     const blog = {
         ...body,
@@ -36,4 +36,4 @@ blogRouter.put("/:id",(request, response, next) => {
     .catch(error => next(error))
 });
 
-module.exports = blogRouter
+module.exports = blogsRouter
