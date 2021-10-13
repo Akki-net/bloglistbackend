@@ -1,5 +1,4 @@
 require('dotenv').config();
-const { response } = require('express');
 const express = require('express');
 const Blog =  require('./models/blog');
 const cors = require('cors');
@@ -43,7 +42,7 @@ app.post("/api/blogs", (request, response, next) => {
     .catch(error => next(error))
 });
 
-app.put("/api/blogs/:id",(request, response) => {
+app.put("/api/blogs/:id",(request, response, next) => {
     const body = request.body;
     const blog = {
         ...body,
@@ -75,4 +74,3 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => console.log(`Server is running on Port: ${PORT}`))
-
