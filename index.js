@@ -72,5 +72,5 @@ const errorHandler = (error, request, response, next) => {
 app.use(unknownEndPoint);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server is running on Port: ${PORT}`))
