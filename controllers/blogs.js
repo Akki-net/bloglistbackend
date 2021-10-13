@@ -1,10 +1,9 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 
-blogsRouter.get("/", (request, response, next) => {
+blogsRouter.get("/", (request, response) => {
     Blog.find({})
     .then(result => response.json(result))
-    .catch(error => next(error))
 });
 
 blogsRouter.post("/", (request, response, next) => {
@@ -29,7 +28,7 @@ blogsRouter.put("/:id",(request, response, next) => {
     const body = request.body;
     const blog = {
         ...body,
-        like: body.like + 1
+        like: body.like
     };
     Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
     .then(result => response.json(result))
