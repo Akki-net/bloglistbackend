@@ -1,10 +1,8 @@
 
-const info = (...params) => {
-    console.log(...params)
+exports.info = function (params) {
+    console.log(params);
 };
 
-const error = (...params) => {
-    console.log(...params)
+exports.error = function (params) {
+    console.log(params);
 };
-
-module.exports = { info, error }

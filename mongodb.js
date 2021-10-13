@@ -1,29 +1,29 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 if(process.argv.length < 3){ 
     console.log('Enter password to enter the page with argument: node mongodb <password>')
 }
 
-const password = process.argv[2];
-const author = process.argv[3];
-const title = process.argv[4];
-const description = process.argv[5];
-const like = process.argv[6];
+var password = process.argv[2];
+var author = process.argv[3];
+var title = process.argv[4];
+var description = process.argv[5];
+var like = process.argv[6];
 
-var url =`mongodb+srv://fullstack:${password}@cluster0.by5qy.mongodb.net/myDB?retryWrites=true&w=majority`;
+var url ='mongodb+srv://fullstack:'+password+'@cluster0.by5qy.mongodb.net/myDB?retryWrites=true&w=majority';
 
 mongoose.connect(url);
 
-const blogSchema = new mongoose.Schema({
+var blogSchema = new mongoose.Schema({
     author: String,
     title: String,
     description: String,
     like: Number
 });
 
-const Blog = mongoose.model('Blog', blogSchema);
+var Blog = mongoose.model('Blog', blogSchema);
 
-const blog = new Blog({
+var blog = new Blog({
     author : process.argv[3],
     title : process.argv[4],
     description : process.argv[5],
@@ -32,26 +32,26 @@ const blog = new Blog({
 
 if(process.argv.length == 3){
     Blog.find({})
-    .then(list => {
-        list.forEach(l => {
-            console.log(`Author: ${l.author}`);
-            console.log(`Title: ${l.title}`);
-            console.log(`Descriotion: ${l.description}`);
-            console.log(`like: ${l.like}`);
-        });
-        mongoose.connection.close();
-    })
+    .then(function (list) {
+            list.forEach(function (l) {
+                    console.log('Author: '+l.author);
+                    console.log('Title: '+l.title);
+                    console.log('Descriotion: '+l.description);
+                    console.log('like: '+l.like);
+                });
+            mongoose.connection.close();
+        })
 }
 
 if(process.argv.length == 7){
-    const blog = new Blog({
+    var blog = new Blog({
         author: author,
         title: title,
         description: description,
         like: like
     });
-    blog.save().then(result => {
-        console.log(`${result.author}'s blog added`);
-        mongoose.connection.close()
-    })
+    blog.save().then(function (result) {
+            console.log(result.author+'\'s blog added');
+            mongoose.connection.close();
+        })
 }

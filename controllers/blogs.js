@@ -1,38 +1,51 @@
-const blogsRouter = require('express').Router();
-const Blog = require('../models/blog');
+var blogsRouter = require('express').Router();
+var Blog = require('../models/blog');
 
-blogsRouter.get("/", (request, response) => {
-    Blog.find({})
-    .then(result => response.json(result))
-});
-
-blogsRouter.post("/", (request, response, next) => {
-    const body = request.body;
-
-    if(body.author=='' || body.title=='' || body.description==''){
-        return response.status(204).send({ error: "missing content"})
-    }
-
-    const blog = new Blog({
-        author: body.author,
-        title: body.title,
-        description: body.description,
-        like: body.like
+blogsRouter.get("/", function (request, response) {
+        Blog.find({})
+            .then(function (result) {
+                    return response.json(result);
+                });
     });
 
-    blog.save().then(result => response.json(result))
-    .catch(error => next(error))
-});
+blogsRouter.post("/", function (request, response, next) {
+        var body = request.body;
 
-blogsRouter.put("/:id",(request, response, next) => {
-    const body = request.body;
-    const blog = {
-        ...body,
-        like: body.like
-    };
-    Blog.findByIdAndUpdate(request.params.id, blog, {new: true})
-    .then(result => response.json(result))
-    .catch(error => next(error))
-});
+        if (body.author == '' || body.title == '' || body.description == '') {
+            return response.status(204).send({ error: "missing content" });
+        }
+
+        var blog = new Blog({
+            author: body.author,
+            title: body.title,
+            description: body.description,
+            like: body.like
+        });
+
+        blog.save().then(function (result) {
+                return response.json(result);
+            })
+            .catch(function (error) {
+                    return next(error);
+                });
+    });
+
+blogsRouter.put("/:id",function (request, response, next) {
+        var body = request.body;
+        var blog = { 
+            author : body.author,
+            title : body.title,
+            description : body.description,
+            like : body.like
+         };
+    
+        Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+            .then(function (result) {
+                    return response.json(result);
+                })
+            .catch(function (error) {
+                    return next(error);
+                });
+    });
 
 module.exports = blogsRouter

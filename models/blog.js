@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const config = require('../utils/config');
-const logger = require('../utils/logger');
-const uniqueValidator = require('mongoose-unique-validator')
+var mongoose = require('mongoose');
+var config = require('../utils/config');
+var logger = require('../utils/logger');
+var uniqueValidator = require('mongoose-unique-validator')
 
 logger.info('Database is going to be connected');
 
@@ -12,7 +12,7 @@ else{
     logger.info('Error is occuring in connect to Database')
 }
 
-const blogSchema = new mongoose.Schema({
+var blogSchema = new mongoose.Schema({
     author: {
         type: String,
         required: true,
@@ -35,10 +35,10 @@ const blogSchema = new mongoose.Schema({
 blogSchema.plugin(uniqueValidator);
 
 blogSchema.set('toJSON', {
-    transform : (document, returnedObject) => {
+    transform : function (document, returnedObject) {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
-        delete returnedObject.__v
+        delete returnedObject.__v;
     }
 });
 

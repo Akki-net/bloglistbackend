@@ -1,8 +1,8 @@
-const cors = require('cors');
-const express = require('express');
-const app = express();
-const middleware = require('./utils/middleware');
-const blogsRouter = require('./controllers/blogs')
+var cors = require('cors');
+var express = require('express');
+var app = express();
+var middleware = require('./utils/middleware');
+var blogsRouter = require('./controllers/blogs')
 
 app.use(cors());
 app.use(express.static('build'));
