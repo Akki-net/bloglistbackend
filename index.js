@@ -19,6 +19,10 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger);
 
+app.get('/',(req, res) => {
+    res.send('<h1>Hello World</h1>')
+})
+
 app.get("/api/blogs", (request, response, next) => {
     Blog.find({})
     .then(result => response.json(result))
@@ -74,7 +78,5 @@ app.use(unknownEndPoint);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
-    console.log(`Server is running on Port: ${PORT}`)
-})
+app.listen(PORT, () => console.log(`Server is running on Port: ${PORT}`))
 
