@@ -19,10 +19,6 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger);
 
-app.get('/',(req, res) => {
-    res.send('<h1>Hello World</h1>')
-})
-
 app.get("/api/blogs", (request, response, next) => {
     Blog.find({})
     .then(result => response.json(result))
