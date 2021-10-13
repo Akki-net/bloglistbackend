@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
-const url = process.env.MONGODB_URI;
+const config = require('../utils/config');
+const logger = require('../utils/logger');
 const uniqueValidator = require('mongoose-unique-validator')
 
-console.log('Database is going to be connected');
+logger.info('Database is going to be connected');
 
-if(mongoose.connect(url)){
-    console.log('Database is connected successfully!')
+if(mongoose.connect(config.MONGODB_URI)){
+    logger.info('Database is connected successfully!')
 }
 else{
-    console.log('Error is occuring in connect to Database')
+    logger.info('Error is occuring in connect to Database')
 }
 
 const blogSchema = new mongoose.Schema({
