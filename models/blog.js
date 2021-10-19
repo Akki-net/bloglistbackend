@@ -1,16 +1,5 @@
 var mongoose = require('mongoose');
-var config = require('../utils/config');
-var logger = require('../utils/logger');
-var uniqueValidator = require('mongoose-unique-validator')
-
-logger.info('Database is going to be connected');
-
-if(mongoose.connect(config.MONGODB_URI)){
-    logger.info('Database is connected successfully!')
-}
-else{
-    logger.info('Error is occuring in connect to Database')
-}
+var uniqueValidator = require('mongoose-unique-validator');
 
 var blogSchema = new mongoose.Schema({
     author: {
@@ -43,6 +32,3 @@ blogSchema.set('toJSON', {
 });
 
 module.exports = mongoose.model('Blog', blogSchema)
-
-
-
