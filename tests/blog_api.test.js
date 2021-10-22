@@ -47,6 +47,24 @@ test('a valid blog can be added', async () => {
     expect(contents).toContain('lage raho munna bhai');
 })
 
+test('verifies a blog that has missing like\'s property', async () => {
+    let newBlog = {
+        author: 'prince',
+        title: 'dream',
+        description: 'keep sleeping.. lol'        
+    };
+
+    if(!newBlog.like){
+        newBlog.like = 0
+    }
+
+    const rtnBlog = await api
+    .post('/api/blogs')
+    .send(newBlog)
+
+    expect(rtnBlog.body.like).toBe(0);
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
