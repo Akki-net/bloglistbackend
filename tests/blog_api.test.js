@@ -65,6 +65,21 @@ test('verifies a blog that has missing like\'s property', async () => {
     expect(rtnBlog.body.like).toBe(0);
 })
 
+test('verify missing property of title', async () => {
+    const newBlog = {
+        author: 'radhe',
+        description: 'radhe radhe',
+        like: 0
+    };
+
+    await api.
+        post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .toJSON()     
+
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
