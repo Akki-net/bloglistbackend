@@ -6,7 +6,7 @@ blogsRouter.get("/", async function (request, response) {
         return response.json(blogs);
     });
 
-blogsRouter.post("/", function (request, response, next) {
+blogsRouter.post("/", async function (request, response) {
         var body = request.body;
 
         if (body.author == '' || body.title == '' || body.description == '') {
@@ -20,12 +20,8 @@ blogsRouter.post("/", function (request, response, next) {
             like: body.like
         });
 
-        blog.save().then(function (result) {
-                return response.json(result);
-            })
-            .catch(function (error) {
-                    return next(error);
-                });
+        const savedBlog = await blog.save();
+        response.json(savedBlog)
     });
 
 blogsRouter.put("/:id",function (request, response, next) {

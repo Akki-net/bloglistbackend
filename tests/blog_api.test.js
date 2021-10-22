@@ -3,26 +3,12 @@ const supertest = require('supertest');
 const app = require('../app');
 const api = supertest(app);
 const Blog = require('../models/blog');
-
-const initialBlogs = [
-    {
-        author: 'surya',
-        title: 'sun',
-        description: 'Sun gives us light',
-        like: 0
-    },
-    {
-        author: 'bhanu',
-        title: 'dhania',
-        description: 'dhania gives us smell',
-        like: 0 
-    }
-];
+const testHelper = require('../utils/test_helper');
 
 beforeEach(async () => {
     await Blog.deleteMany({})
   
-    const blogObjects = initialBlogs.map(blog => new Blog(blog))
+    const blogObjects = testHelper.initialBlogs.map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
   })
@@ -38,6 +24,27 @@ test('verify the unique identifier property of blog', async () => {
     const response = await api.get('/api/blogs');
     const id = response.body[0].id;
     expect(id).toBeDefined()
+})
+
+test('a valid blog can be added', async () => {
+    const newBlog = {
+        author : 'Akash',
+        title : 'Sky is Unlimited',
+        description : 'lage raho munna bhai',
+        likes : 0
+    };
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(200)
+        .expect('Content-type', /application\/json/)
+
+    const blogsAtEnd = await testHelper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(testHelper.initialBlogs.length + 1)
+  
+    const contents = blogsAtEnd.map(b => b.description);
+    expect(contents).toContain('lage raho munna bhai');
 })
 
 afterAll(() => {

@@ -1,5 +1,6 @@
 var cors = require('cors');
 var express = require('express');
+require('express-async-errors');
 var app = express();
 var middleware = require('./utils/middleware');
 var blogsRouter = require('./controllers/blogs');
