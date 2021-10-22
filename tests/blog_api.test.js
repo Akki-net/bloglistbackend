@@ -34,6 +34,12 @@ test('blogs are returned as json', async () => {
         .expect('Content-Type', /application\/json/)
 }, 100000)
 
+test('verify the unique identifier property of blog', async () => {
+    const response = await api.get('/api/blogs');
+    const id = response.body[0].id;
+    expect(id).toBeDefined()
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
