@@ -24,7 +24,7 @@ blogsRouter.post("/", async function (request, response) {
         response.json(savedBlog)
     });
 
-blogsRouter.put("/:id",function (request, response, next) {
+blogsRouter.put("/:id", async function (request, response) {
         var body = request.body;
         var blog = { 
             author : body.author,
@@ -33,13 +33,9 @@ blogsRouter.put("/:id",function (request, response, next) {
             like : body.like
          };
     
-        Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-            .then(function (result) {
-                    return response.json(result);
-                })
-            .catch(function (error) {
-                    return next(error);
-                });
+        const result = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+            
+        response.json(result);
     });
 
 module.exports = blogsRouter
