@@ -3,22 +3,38 @@ const supertest = require('supertest');
 const app = require('../app');
 const api = supertest(app);
 const Blog = require('../models/blog');
-const testHelper = require('../utils/test_helper');
+const helper = require('./test_helper');
 
+describe('when there is initially some blogs saved', () => {
 beforeEach(async () => {
     await Blog.deleteMany({})
   
-    const blogObjects = testHelper.initialBlogs.map(blog => new Blog(blog))
+    const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
     const promiseArray = blogObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
   })
+})
 
 test('blogs are returned as json', async () => {
     await api
         .get('/api/blogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
-}, 100000)
+})
+
+test('all blogs are returned', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(helper.initialBlogs.length)
+})
+
+test('a specific blog is within the returned blogs', async () => {
+    const response = await api.get('/api/blogs')
+
+    const contents = response.body.map(r => r.description)
+    expect(contents).toContain(
+      'dhania gives us smell'
+    )
+  })
 
 test('verify the unique identifier property of blog', async () => {
     const response = await api.get('/api/blogs');
@@ -40,8 +56,8 @@ test('a valid blog can be added', async () => {
         .expect(200)
         .expect('Content-type', /application\/json/)
 
-    const blogsAtEnd = await testHelper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(testHelper.initialBlogs.length + 1)
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
   
     const contents = blogsAtEnd.map(b => b.description);
     expect(contents).toContain('lage raho munna bhai');
@@ -75,8 +91,7 @@ test('verify missing property of title', async () => {
     await api.
         post('/api/blogs')
         .send(newBlog)
-        .expect(400)
-        .toJSON()     
+        .expect(400)   
 
 })
 
