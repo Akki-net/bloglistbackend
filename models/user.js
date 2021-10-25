@@ -1,10 +1,26 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new mongoose.Schema({
-    username: String,
-    name: String,
-    passwordHash: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        minLength: 3
+    },
+    name: {
+        type: String,
+        required: true        
+    },
+    passwordHash: {
+        type: String,
+        required: true,
+        unique: true,
+        minLength: 3
+    }
 });
+
+userSchema.plugin(uniqueValidator);
 
 userSchema.set('toJSON', {
     transform: (document, returnedObject) => {
