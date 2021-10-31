@@ -6,6 +6,7 @@ var middleware = require('./utils/middleware');
 var loginRouter = require('./controllers/login');
 var usersRouter = require('./controllers/users');
 var blogsRouter = require('./controllers/blogs');
+var likeRouter = require('./controllers/like');
 var config = require('./utils/config');
 var logger = require('./utils/logger');
 var mongoose = require('mongoose');
@@ -29,7 +30,7 @@ app.use(middleware.tokenExtractor);
 app.use('/api/login', loginRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/blogs', blogsRouter);
-
+app.use('/api/likes', likeRouter);
 app.use(middleware.unknownEndPoint);
 app.use(middleware.errorHandler);
 

@@ -2,6 +2,7 @@ var jwt = require('jsonwebtoken');
 var blogsRouter = require('express').Router();
 var Blog = require('../models/blog');
 var User = require('../models/user');
+var Like = require('../models/like');
 
 blogsRouter.get("/", async function (request, response) {
         const blogs = await Blog.find({}).populate('user',{ username: 1, name: 1, id: 1})
@@ -32,6 +33,9 @@ blogsRouter.post("/", async function (request, response) {
         const savedBlog = await blog.save();
         user.blogs = user.blogs.concat(savedBlog._id);
         await User.findByIdAndUpdate(user._id, user);
+
+        const myLike = new Like({like: false});
+        await myLike.save()
 
         response.json(savedBlog)
     });
